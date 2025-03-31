@@ -34,18 +34,20 @@
 
 from pydantic import BaseModel, Field, ConfigDict
 
-class User(BaseModel): 
-    model_config = ConfigDict(extra='allow')
-    name: str 
+
+class User(BaseModel):
+    model_config = ConfigDict(extra="allow")
+    name: str
     age: int = Field(18)
     # skills: list = Field(default_factory=lambda data: data['age'] * 2)
-    
+
+
 # user1 = User(name='Anton', x='hello')
 
 # print(user1)
 
 from pydantic import ValidationError
-from app.students.models import Student
+from app.students.schemes import Student
 from datetime import date
 
 student_data = {
@@ -59,15 +61,16 @@ student_data = {
     "enrollment_year": 2022,
     "major": "Информатика1",
     "course": 3,
-    "special_notes": "Увлекается программированием"
+    "special_notes": "Увлекается программированием",
 }
 
-def test_valid_student(data: dict) -> None: 
-    try: 
+
+def test_valid_student(data: dict) -> None:
+    try:
         student = Student(**data)
         print(student)
-    except ValidationError as e: 
-        print(f'Ошибка валидации {e}')
+    except ValidationError as e:
+        print(f"Ошибка валидации {e}")
 
 
 test_valid_student(student_data)
@@ -75,18 +78,17 @@ test_valid_student(student_data)
 # from dataclasses import dataclass, field
 
 # @dataclass()
-# class Book: 
+# class Book:
 #     name: str = field(default_factory=[])
-    
+
 # @dataclass()
-# class Book2: 
-#     name: str = field(default_factory=[])    
-    
+# class Book2:
+#     name: str = field(default_factory=[])
+
 # book1 = Book(name='Lord of Rings')
 # print(book1.name)
 
 
-    
 # book2 = Book2(name='Lords')
 # print(book2.name)
 
@@ -99,7 +101,6 @@ test_valid_student(student_data)
 # class Book(BaseBook):
 #     desc: str = None
 #     title: str = "Unknown"
-    
+
 # book = Book(desc='hello')
 # print(book)
-
