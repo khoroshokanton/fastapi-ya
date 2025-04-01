@@ -1,5 +1,9 @@
-from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from typing import AsyncIterator
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession,
+)
 
 from .config import settings
 
@@ -22,15 +26,16 @@ class DatabaseManager:
         )
 
         self.session_factory = async_sessionmaker(
-            bing=self.engine, autoflush=False, expire_on_commit=False
+            bing=self.engine,
+            autoflush=False,
+            autocommit=False,
+            expire_on_commit=False,
         )
 
     async def dispose(self) -> None:
+        if self.engine is None:
+            raise Exception('DatabaseSessionManager не инициализирован')
         await self.engine.dispose()
-
-    async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
-        async with self.session_factory() as session:
-            yield session
 
 
 database_manager = DatabaseManager(
@@ -40,3 +45,8 @@ database_manager = DatabaseManager(
     max_overflow=settings.db.max_overflow,
     pool_pre_ping=settings.db.pool_pre_ping,
 )
+
+
+async def get_session() -> AsyncIterator[AsyncSession]:
+    async with database_manager.session_factory() as session:
+        yield session

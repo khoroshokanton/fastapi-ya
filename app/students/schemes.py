@@ -1,17 +1,23 @@
 from enum import StrEnum
 from datetime import date, datetime
-import re
+# import re
 
-from pydantic import BaseModel, Field, EmailStr, field_validator, ValidationError
+from pydantic import (
+    BaseModel,
+    Field,
+    EmailStr,
+    field_validator,
+    # ValidationError,
+)
 
 
 class Major(StrEnum):
-    informatics = "Информатика"
-    economics = "Экономика"
-    law = "Право"
-    medicine = "Медицина"
-    engineering = "Инженерия"
-    languages = "Языки"
+    informatics = 'Информатика'
+    economics = 'Экономика'
+    law = 'Право'
+    medicine = 'Медицина'
+    engineering = 'Инженерия'
+    languages = 'Языки'
 
 
 class Student(BaseModel):
@@ -21,7 +27,7 @@ class Student(BaseModel):
     date_of_birth: date
     email: EmailStr
     phone_number: str = Field(
-        default=..., description="Номер телефона в международном формате"
+        default=..., description='Номер телефона в международном формате'
     )
     address: str = Field(default=..., min_length=10, max_length=200)
     enrollment_year: int = Field(ge=2002)
@@ -36,9 +42,9 @@ class Student(BaseModel):
     #             raise ValueError('Номер телефона должен начинаться с "+" и содержать от 1 до 15 цифр')
     #         return value
 
-    @field_validator("date_of_birth")
+    @field_validator('date_of_birth')
     @classmethod
     def validate_date_of_birth(cls, value: date) -> date:
         if value and value >= datetime.now().date():
-            raise ValueError("Дата рождения должна быть в прошлом")
+            raise ValueError('Дата рождения должна быть в прошлом')
         return value

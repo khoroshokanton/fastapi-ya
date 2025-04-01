@@ -32,48 +32,48 @@
 # print(students)
 
 
-from pydantic import BaseModel, Field, ConfigDict
+# from pydantic import BaseModel, Field, ConfigDict
 
 
-class User(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    name: str
-    age: int = Field(18)
-    # skills: list = Field(default_factory=lambda data: data['age'] * 2)
+# class User(BaseModel):
+#     model_config = ConfigDict(extra="allow")
+#     name: str
+#     age: int = Field(18)
+# skills: list = Field(default_factory=lambda data: data['age'] * 2)
 
 
 # user1 = User(name='Anton', x='hello')
 
 # print(user1)
 
-from pydantic import ValidationError
-from app.students.schemes import Student
-from datetime import date
+# from pydantic import ValidationError
+# from app.students.schemes import Student
+# from datetime import date
 
-student_data = {
-    "student_id": 1,
-    "phone_number": "+1234567890",
-    "first_name": "Иван",
-    "last_name": "Иванов",
-    "date_of_birth": date(2000, 1, 1),
-    "email": "ivan.ivanov@example.com",
-    "address": "Москва, ул. Пушкина, д. Колотушкина",
-    "enrollment_year": 2022,
-    "major": "Информатика1",
-    "course": 3,
-    "special_notes": "Увлекается программированием",
-}
-
-
-def test_valid_student(data: dict) -> None:
-    try:
-        student = Student(**data)
-        print(student)
-    except ValidationError as e:
-        print(f"Ошибка валидации {e}")
+# student_data = {
+#     "student_id": 1,
+#     "phone_number": "+1234567890",
+#     "first_name": "Иван",
+#     "last_name": "Иванов",
+#     "date_of_birth": date(2000, 1, 1),
+#     "email": "ivan.ivanov@example.com",
+#     "address": "Москва, ул. Пушкина, д. Колотушкина",
+#     "enrollment_year": 2022,
+#     "major": "Информатика1",
+#     "course": 3,
+#     "special_notes": "Увлекается программированием",
+# }
 
 
-test_valid_student(student_data)
+# def test_valid_student(data: dict) -> None:
+#     try:
+#         student = Student(**data)
+#         print(student)
+#     except ValidationError as e:
+#         print(f"Ошибка валидации {e}")
+
+
+# test_valid_student(student_data)
 
 # from dataclasses import dataclass, field
 
@@ -104,3 +104,31 @@ test_valid_student(student_data)
 
 # book = Book(desc='hello')
 # print(book)
+
+
+# class SquadIterator:
+#     def __init__(self, initValue: int):
+#         self.initValue = initValue
+
+#     def __next__(self):
+#         self.initValue = self.initValue * 2
+#         return self.initValue
+
+#     def __iter__(self):
+#         return self
+
+
+# x = SquadIterator(5)
+# print(next(x))
+# print(next(x))
+# print(next(x))
+# print(next(x))
+
+# y = iter(x)
+# print(next(y))
+
+# x = [1, 2, 3]
+# y = iter(x)
+
+# print(next(y))
+# print(next(y))

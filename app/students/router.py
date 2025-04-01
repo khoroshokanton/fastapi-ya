@@ -1,15 +1,25 @@
-# @app.get("/students")
-# async def get_all_students(course: int | None = None) -> list[StudentModel]:
-#     students = json_to_dict_list(path_to_json)
-#     if course is None:
-#         return students
-#     else:
-#         result = []
-#         for student in students:
-#             if student["course"] == course:
-#                 result.append(student)
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-#         return result
+from app.core.database import get_session
+from .schemes import Student as StudentSchema
+import app.students.service as service
+
+router = APIRouter(prefix='/students', tags=['Студенты'])
+
+
+@router.get('/')
+async def get_all_students(
+    session: AsyncSession = Depends(get_session),
+) -> list[StudentSchema]:
+    return await service.get_all_students(session=session)
+
+
+@router.get('/{id}')
+async def get_student_by_id(
+    id: int, session: AsyncSession = Depends(get_session)
+) -> StudentSchema | None:
+    return await service.get_student_by_id(id=id, session=session)
 
 
 # # @app.get("/students/{course}")
@@ -37,11 +47,3 @@
 # #         ]
 
 # #     return filtered_students
-
-# @app.get('/students/{id}')
-# async def get_student_by_id(id: int) -> StudentModel | None:
-#     students: list[StudentModel] = json_to_dict_list(path_to_json)
-#     for student in students:
-#         if student['student_id'] == id:
-#             return student
-#     return None
